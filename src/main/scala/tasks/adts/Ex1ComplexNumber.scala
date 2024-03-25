@@ -36,8 +36,8 @@ object Ex1ComplexNumbers:
         ComplexImpl(complex.re() - other.re(), complex.im() - other.im())
       def asString(): String =
         complex match
-          case ComplexImpl(_, 0) => s"${complex.re()}"
-          case ComplexImpl(0, _) => s"${complex.im()}i"
+          case ComplexImpl(re, 0) => s"$re"
+          case ComplexImpl(0, im) => s"{$im}i"
           case _ =>
             val sign = if complex.im() >= 0 then "+" else "-"
             s"${complex.re()} $sign ${Math.abs(complex.im())}i"
