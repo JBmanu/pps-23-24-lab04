@@ -68,6 +68,10 @@ class SchoolModelTest:
     val searchPCD = school.courseByName(pcd)
     assertEquals(Just(pcd), searchPCD)
 
+  @Test def searchCourseNotInSchool(): Unit =
+    val searchChemical = school.courseByName(chemical)
+    assertEquals(Empty(), searchChemical)
+
 
 
 
