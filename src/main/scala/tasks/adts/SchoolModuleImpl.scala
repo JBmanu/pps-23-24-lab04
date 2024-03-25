@@ -46,7 +46,10 @@ object SchoolModuleImpl extends SchoolModule:
         case _ => Empty()
 
     override def nameOfTeacher(teacher: Teacher): String = teacher.name
-    override def nameOfCourse(teacher: Teacher): String = ???
+    override def nameOfCourse(teacher: Teacher): String =
+      teacher.courses match
+        case Cons(h, _) => h
+        case _ => ""
 
     override def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
     override def coursesOfATeacher(teacher: Teacher): Sequence[Course] = teacher.courses

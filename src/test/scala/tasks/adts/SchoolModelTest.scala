@@ -76,9 +76,9 @@ class SchoolModelTest:
     val courses = school.coursesOfATeacher(mirkoTeacher)
     assertEquals(Cons(pps, Nil()), courses)
 
-//  @Test def nameOfCourse(): Unit =
-//    val nameOfCourse = school.nameOfCourse(mirkoTeacher)
-//    assertEquals(pps, nameOfCourse)
+  @Test def nameOfCourse(): Unit =
+    val nameOfCourse = school.nameOfCourse(mirkoTeacher)
+    assertEquals(pps, nameOfCourse)
 
 
 
