@@ -44,6 +44,10 @@ class SchoolModelTest:
     val newCourses = Cons("Chemical", school.courses)
     assertEquals(newCourses, schoolAfterAdd.courses)
 
+  @Test def addEmptyCourse(): Unit =
+    assertThrows(classOf[IllegalArgumentException], () => school.addCourse(""))
+    assertThrows(classOf[IllegalArgumentException], () => school.addCourse("    "))
+
 
 
 

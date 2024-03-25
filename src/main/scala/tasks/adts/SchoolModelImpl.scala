@@ -23,6 +23,7 @@ object SchoolModelImpl extends SchoolModule:
       SchoolImpl(teachers, school.courses)
 
     override def addCourse(name: String): School =
+      if name.isBlank then throw lang.IllegalArgumentException()
       val courses = Cons(name, school.courses)
       SchoolImpl (school.teachers, courses)
     override def teacherByName(name: String): Optional[Teacher] = ???
