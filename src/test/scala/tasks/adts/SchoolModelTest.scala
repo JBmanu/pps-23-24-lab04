@@ -14,17 +14,17 @@ class SchoolModelTest:
   val pps: Course = "PPS"
   val pcd: Course = "PCD"
   val courses: Sequence[Course] = Cons(pps, Cons(pcd, Nil()))
-  val mirko: Teacher = TeacherImpl("Mirko", Cons(pps, Nil()))
-  val alessandro: Teacher = TeacherImpl("Alessandro", Cons(pcd, Nil()))
-  val teachers: Sequence[TeacherImpl] = Cons(mirko, Cons(alessandro, Nil()))
+  val teacherMirko: Teacher = TeacherImpl("Mirko", Cons(pps, Nil()))
+  val teacherAlessandro: Teacher = TeacherImpl("Alessandro", Cons(pcd, Nil()))
+  val teachers: Sequence[TeacherImpl] = Cons(teacherMirko, Cons(teacherAlessandro, Nil()))
   val school: School = SchoolImpl(teachers, courses)
 
   @Test def createCourse(): Unit =
     assertEquals("PPS", pps)
 
   @Test def createTeacher(): Unit =
-    assertEquals("Mirko", mirko.name)
-    assertEquals(Cons(pps, Nil()), mirko.courses)
+    assertEquals("Mirko", teacherMirko.name)
+    assertEquals(Cons(pps, Nil()), teacherMirko.courses)
 
   @Test def createSchool(): Unit =
     assertEquals(teachers, school.teachers)
@@ -48,6 +48,9 @@ class SchoolModelTest:
     assertThrows(classOf[IllegalArgumentException], () => school.addCourse(""))
     assertThrows(classOf[IllegalArgumentException], () => school.addCourse("    "))
 
+  @Test def searchTeacherByName(): Unit =
+    val searchMirko = school.teacherByName("Mirko")
+    assertEquals(Just(teacherMirko), searchMirko)
 
 
 
