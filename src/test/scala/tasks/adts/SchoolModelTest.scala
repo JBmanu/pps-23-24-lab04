@@ -64,6 +64,9 @@ class SchoolModelTest:
     val searchPippo = school.teacherByName(pippoName)
     assertEquals(Empty(), searchPippo)
 
+  @Test def searchCourseByName(): Unit =
+    val searchPCD = school.courseByName(pcd)
+    assertEquals(Just(pcd), searchPCD)
 
 
 

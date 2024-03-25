@@ -44,7 +44,11 @@ object SchoolModuleImpl extends SchoolModule:
         case Cons(h, _) => Just(h)
         case _ => Empty()
 
-    override def courseByName(name: String): Optional[Course] = ???
+    override def courseByName(name: Course): Optional[Course] =
+      filter(school.courses)(c => c.equals(name)) match
+        case Cons(h, _) => Just(h)
+        case _ => Empty()
+
     override def nameOfTeacher(teacher: Teacher): String = ???
     override def nameOfCourse(teacher: Teacher): String = ???
     override def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
