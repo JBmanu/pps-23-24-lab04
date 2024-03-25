@@ -8,30 +8,42 @@ import u03.Sequences.Sequence.*
 
 import java.lang
 
-object SchoolModelImpl extends SchoolModule:
-  override type School = SchoolImpl
-  override type Teacher = TeacherImpl
-  override type Course = String
+object SchoolModuleImpl extends SchoolModule:
+  override opaque type School = SchoolImpl
+  override opaque type Teacher = TeacherImpl
+  override opaque type Course = String
 
-  case class TeacherImpl(name: String, courses: Sequence[Course])
+  private case class TeacherImpl(name: String, courses: Sequence[Course])
 
-  case class SchoolImpl(teachers: Sequence[Teacher], courses: Sequence[Course])
+  private case class SchoolImpl(teachers: Sequence[Teacher], courses: Sequence[Course])
+
+  def course(name: String): Course = name
+  def teacher(name: String, courses: Sequence[Course]): Teacher = TeacherImpl(name, courses)
+  def school(teachers: Sequence[Teacher], courses: Sequence[Course]): School = SchoolImpl(teachers, courses)
+
+  extension (teacher: Teacher)
+    def name(): String = teacher.name
+    def courses(): Sequence[Course] = teacher.courses
 
   extension (school: School)
+    def teachers(): Sequence[Teacher] = school.teachers
+    def courses(): Sequence[Course] = school.courses
+
     override def addTeacher(name: String): School =
       if name.isBlank then throw lang.IllegalArgumentException()
       val teachers = Cons(TeacherImpl(name, Nil()), school.teachers)
       SchoolImpl(teachers, school.courses)
 
-    override def addCourse(name: String): School =
+    override def addCourse(name: Course): School =
       if name.isBlank then throw lang.IllegalArgumentException()
       val courses = Cons(name, school.courses)
       SchoolImpl(school.teachers, courses)
 
     override def teacherByName(name: String): Optional[Teacher] =
-      school.teachers match
-        case Cons(h, t) if h.name.equals(name) => Just(h)
+      filter(school.teachers())(t => t.name.equals(name)) match
+        case Cons(h, _) => Just(h)
         case _ => Empty()
+
     override def courseByName(name: String): Optional[Course] = ???
     override def nameOfTeacher(teacher: Teacher): String = ???
     override def nameOfCourse(teacher: Teacher): String = ???
