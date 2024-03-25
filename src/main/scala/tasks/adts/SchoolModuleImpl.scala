@@ -21,9 +21,6 @@ object SchoolModuleImpl extends SchoolModule:
   def teacher(name: String, courses: Sequence[Course]): Teacher = TeacherImpl(name, courses)
   def school(teachers: Sequence[Teacher], courses: Sequence[Course]): School = SchoolImpl(teachers, courses)
 
-  extension (teacher: Teacher)
-    def courses(): Sequence[Course] = teacher.courses
-
   extension (school: School)
     def teachers(): Sequence[Teacher] = school.teachers
     def courses(): Sequence[Course] = school.courses
@@ -50,6 +47,7 @@ object SchoolModuleImpl extends SchoolModule:
 
     override def nameOfTeacher(teacher: Teacher): String = teacher.name
     override def nameOfCourse(teacher: Teacher): String = ???
+
     override def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
-    override def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
+    override def coursesOfATeacher(teacher: Teacher): Sequence[Course] = teacher.courses
 
