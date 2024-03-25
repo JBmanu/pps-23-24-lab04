@@ -26,10 +26,6 @@ class SchoolModelTest:
   @Test def createCourse(): Unit =
     assertEquals("PPS", pps)
 
-  @Test def createTeacher(): Unit =
-    assertEquals(mirkoName, mirkoTeacher.name())
-    assertEquals(Cons(pps, Nil()), mirkoTeacher.courses())
-
   @Test def createSchool(): Unit =
     assertEquals(teachers, school.teachers())
     assertEquals(courses, school.courses())
@@ -71,6 +67,11 @@ class SchoolModelTest:
   @Test def searchCourseNotInSchool(): Unit =
     val searchChemical = school.courseByName(chemical)
     assertEquals(Empty(), searchChemical)
+
+  @Test def nameOfTeacher(): Unit =
+    val name = school.nameOfTeacher(mirkoTeacher)
+    assertEquals(mirkoName, name)
+
 
 
 

@@ -22,7 +22,6 @@ object SchoolModuleImpl extends SchoolModule:
   def school(teachers: Sequence[Teacher], courses: Sequence[Course]): School = SchoolImpl(teachers, courses)
 
   extension (teacher: Teacher)
-    def name(): String = teacher.name
     def courses(): Sequence[Course] = teacher.courses
 
   extension (school: School)
@@ -40,16 +39,16 @@ object SchoolModuleImpl extends SchoolModule:
       SchoolImpl(school.teachers, courses)
 
     override def teacherByName(name: String): Optional[Teacher] =
-      filter(school.teachers())(t => t.name.equals(name)) match
+      filter(school.teachers)(_.name.equals(name)) match
         case Cons(h, _) => Just(h)
         case _ => Empty()
 
     override def courseByName(name: Course): Optional[Course] =
-      filter(school.courses)(c => c.equals(name)) match
+      filter(school.courses)(_.equals(name)) match
         case Cons(h, _) => Just(h)
         case _ => Empty()
 
-    override def nameOfTeacher(teacher: Teacher): String = ???
+    override def nameOfTeacher(teacher: Teacher): String = teacher.name
     override def nameOfCourse(teacher: Teacher): String = ???
     override def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
     override def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
