@@ -6,12 +6,13 @@ import u03.Sequences.Sequence
 import u03.{Optionals, Sequences}
 
 object SchoolModelImpl extends SchoolModule:
-  override type School = this.type
+  override type School = SchoolImpl
   override type Teacher = TeacherImpl
   override type Course = Optional[String]
 
   case class TeacherImpl(name: String, courses: Sequence[Course])
-
+  case class SchoolImpl(teachers: Sequence[Teacher], courses: Sequence[Course])
+  
   extension (school: School)
     override def addTeacher(name: String): School = ???
     override def addCourse(name: String): School = ???
