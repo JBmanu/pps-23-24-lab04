@@ -25,13 +25,19 @@ object SchoolModuleImpl extends SchoolModule:
     def teachers(): Sequence[Teacher] = school.teachers
     def courses(): Sequence[Course] = school.courses
 
+    private def containsTeacher(teacherName: String): Boolean =
+      filter(school.teachers)(_.name.equals(teacherName)) match
+        case Cons(h, _) => true
+        case _ => false
+
     override def addTeacher(name: String): School =
-      if name.isBlank then throw lang.IllegalArgumentException()
+      if name.isBlank then throw IllegalArgumentException("String Empty")
+      if containsTeacher(name) then throw IllegalArgumentException("Contain same teacher")
       val teachers = Cons(TeacherImpl(name, Nil()), school.teachers)
       SchoolImpl(teachers, school.courses)
 
     override def addCourse(name: Course): School =
-      if name.isBlank then throw lang.IllegalArgumentException()
+      if name.isBlank then throw IllegalArgumentException("String Empty")
       val courses = Cons(name, school.courses)
       SchoolImpl(school.teachers, courses)
 
@@ -46,11 +52,24 @@ object SchoolModuleImpl extends SchoolModule:
         case _ => Empty()
 
     override def nameOfTeacher(teacher: Teacher): String = teacher.name
+
     override def nameOfCourse(teacher: Teacher): String =
       teacher.courses match
         case Cons(h, _) => h
         case _ => ""
 
     override def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
+//      val newTeacher = TeacherImpl(teacher.name, Cons(course, Nil()))
+//      school.addTeacher()
+//      val filterNotEquals = filter(school.teachers)(!_.equals(teacher))
+//      var filterEquals = filter(school.teachers)(_.equals(teacher))
+//      filterEquals match
+//        case Cons(h, _) =>
+//          val newTeacher = Cons(TeacherImpl(h.name, Cons(course, Nil())), filterNotEquals)
+//          val newSchool = SchoolImpl(newTeacher, school.courses)
+//          newSchool.addCourse(course)
+//          newSchool
+//        case _ => "ERRORE non ce prof"
+
     override def coursesOfATeacher(teacher: Teacher): Sequence[Course] = teacher.courses
 

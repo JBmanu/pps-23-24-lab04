@@ -17,10 +17,10 @@ class SchoolModelTest:
   val mirkoName = "Mirko"
   val pippoName = "Pippo"
   val alessandroName = "Alessandro"
-  val courses: Sequence[Course] = Cons(pps, Cons(pcd, Nil()))
   val mirkoTeacher: Teacher = teacher(mirkoName, Cons(pps, Nil()))
   val alessandroTeacher: Teacher = teacher(alessandroName, Cons(pcd, Nil()))
   val teachers: Sequence[Teacher] = Cons(mirkoTeacher, Cons(alessandroTeacher, Nil()))
+  val courses: Sequence[Course] = Cons(pps, Cons(pcd, Nil()))
   val school: School = SchoolModuleImpl.school(teachers, courses)
 
   @Test def createCourse(): Unit =
@@ -40,6 +40,10 @@ class SchoolModelTest:
     val emptyCourseWithBlank = "    "
     assertThrows(classOf[IllegalArgumentException], () => school.addTeacher(emptyCourse))
     assertThrows(classOf[IllegalArgumentException], () => school.addTeacher(emptyCourseWithBlank))
+
+  @Test def addSameTeacherTwice(): Unit =
+    val schoolAfterFirstAdd = school.addTeacher(pippoName)
+    assertThrows(classOf[IllegalArgumentException], () => schoolAfterFirstAdd.addTeacher(pippoName))
 
   @Test def addCourse(): Unit =
     val schoolAfterAdd = school.addCourse(chemical)
@@ -80,18 +84,9 @@ class SchoolModelTest:
     val nameOfCourse = school.nameOfCourse(mirkoTeacher)
     assertEquals(pps, nameOfCourse)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+//  @Test def setTeacherToCourse(): Unit = {
+//    val oop = course("OOP")
+//    val newSchool = school.setTeacherToCourse(mirkoTeacher, oop)
+//    val nameOfCourse = newSchool.nameOfCourse(mirkoTeacher)
+//    assertEquals(oop, nameOfCourse)
+//  }
