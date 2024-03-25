@@ -50,6 +50,10 @@ class SchoolModelTest:
     val newCourses = Cons(chemical, school.courses())
     assertEquals(newCourses, schoolAfterAdd.courses())
 
+  @Test def addSameCourseTwice(): Unit =
+    val schoolAfterFirstAdd = school.addCourse(chemical)
+    assertThrows(classOf[IllegalArgumentException], () => schoolAfterFirstAdd.addCourse(chemical))
+
   @Test def addEmptyCourse(): Unit =
     val emptyCourse = course("")
     val emptyCourseWithBlank = course("    ")

@@ -21,14 +21,22 @@ object SchoolModuleImpl extends SchoolModule:
   def teacher(name: String, courses: Sequence[Course]): Teacher = TeacherImpl(name, courses)
   def school(teachers: Sequence[Teacher], courses: Sequence[Course]): School = SchoolImpl(teachers, courses)
 
+  private def contains[A](l: Sequence[A])(pred: A => Boolean): Boolean =
+    filter(l)(pred) match
+      case Cons(h, _) => true
+      case _ => false
+
+
+
   extension (school: School)
     def teachers(): Sequence[Teacher] = school.teachers
     def courses(): Sequence[Course] = school.courses
 
     private def containsTeacher(teacherName: String): Boolean =
-      filter(school.teachers)(_.name.equals(teacherName)) match
-        case Cons(h, _) => true
-        case _ => false
+      contains(school.teachers)(_.name.equals(teacherName))
+
+    private def containsCourse(name: Course): Boolean =
+      contains(school.courses)(_.equals(name))
 
     override def addTeacher(name: String): School =
       if name.isBlank then throw IllegalArgumentException("String Empty")
@@ -38,6 +46,7 @@ object SchoolModuleImpl extends SchoolModule:
 
     override def addCourse(name: Course): School =
       if name.isBlank then throw IllegalArgumentException("String Empty")
+      if containsCourse(name) then throw IllegalArgumentException("Contain same course")
       val courses = Cons(name, school.courses)
       SchoolImpl(school.teachers, courses)
 
