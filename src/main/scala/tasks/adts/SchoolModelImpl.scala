@@ -11,7 +11,7 @@ import java.lang
 object SchoolModelImpl extends SchoolModule:
   override type School = SchoolImpl
   override type Teacher = TeacherImpl
-  override type Course = Optional[String]
+  override type Course = String
 
   case class TeacherImpl(name: String, courses: Sequence[Course])
   case class SchoolImpl(teachers: Sequence[Teacher], courses: Sequence[Course])
@@ -22,7 +22,9 @@ object SchoolModelImpl extends SchoolModule:
       val teachers = Cons(TeacherImpl(name, Nil()), school.teachers)
       SchoolImpl(teachers, school.courses)
 
-    override def addCourse(name: String): School = ???
+    override def addCourse(name: String): School =
+      val courses = Cons(name, school.courses)
+      SchoolImpl (school.teachers, courses)
     override def teacherByName(name: String): Optional[Teacher] = ???
     override def courseByName(name: String): Optional[Course] = ???
     override def nameOfTeacher(teacher: Teacher): String = ???
