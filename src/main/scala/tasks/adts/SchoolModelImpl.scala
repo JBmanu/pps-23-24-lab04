@@ -3,9 +3,10 @@ package tasks.adts
 import tasks.adts.SchoolModel.SchoolModule
 import u03.Sequences.Sequence
 import u03.Sequences.Sequence.*
-
 import u03.Optionals.Optional
 import u03.Optionals.Optional.*
+
+import java.lang
 
 object SchoolModelImpl extends SchoolModule:
   override type School = SchoolImpl
@@ -14,11 +15,13 @@ object SchoolModelImpl extends SchoolModule:
 
   case class TeacherImpl(name: String, courses: Sequence[Course])
   case class SchoolImpl(teachers: Sequence[Teacher], courses: Sequence[Course])
-  
+
   extension (school: School)
     override def addTeacher(name: String): School =
+      if name.isBlank then throw lang.IllegalArgumentException()
       val teachers = Cons(TeacherImpl(name, Nil()), school.teachers)
       SchoolImpl(teachers, school.courses)
+
     override def addCourse(name: String): School = ???
     override def teacherByName(name: String): Optional[Teacher] = ???
     override def courseByName(name: String): Optional[Course] = ???
