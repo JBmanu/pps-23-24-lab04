@@ -26,6 +26,11 @@ object Sequences: // Essentially, generic linkedlists
         case Cons(h, _) => true
         case _ => false
 
+    def remove[A](l: Sequence[A])(pred: A => Boolean): Sequence[A] =
+      l match
+        case Cons(h, t) if !pred(h) => Cons(h, remove(t)(pred))
+        case _ => Nil()
+
 @main def trySequences =
   import Sequences.* 
   val l = Sequence.Cons(10, Sequence.Cons(20, Sequence.Cons(30, Sequence.Nil())))
