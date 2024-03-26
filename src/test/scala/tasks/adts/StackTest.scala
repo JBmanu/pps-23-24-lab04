@@ -17,14 +17,14 @@ class Stacktest:
 
   import stack.*
 
-  @Test def testEmpty() =
+  @Test def testEmpty(): Unit =
     assertEquals(Sequence.Nil(), empty[Int].asSequence())
 
-  @Test def testPush() =
+  @Test def testPush(): Unit =
     assertEquals(Sequence.Cons(10, Sequence.Nil()), empty[Int].push(10).asSequence())
 
-  @Test def testPopOnEmpty() =
+  @Test def testPopOnEmpty(): Unit =
     assertEquals(Optional.Empty(), empty[Int].pop(10))
 
-  @Test def testPopOnNotEmpty() =
+  @Test def testPopOnNotEmpty(): Unit =
     assertEquals(Optional.Just((10, Sequence.Nil())), empty[Int].push(10).pop(10))
