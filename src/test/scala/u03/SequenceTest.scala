@@ -2,6 +2,7 @@ package u03
 
 import org.junit.*
 import org.junit.Assert.*
+import u03.Optionals.Optional.*
 
 class SequenceTest:
 
@@ -36,5 +37,8 @@ class SequenceTest:
     assertEquals(sequenceMatch, substituted(l)(_.equals(30))(40))
     assertEquals(l, substituted(l)(_.equals(40))(50))
 
-
+  @Test def testFind(): Unit =
+    val value = Just(30)
+    assertEquals(value, findFirst(l)(_.equals(30)))
+    assertEquals(Empty(), findFirst(l)(_.equals(40)))
 

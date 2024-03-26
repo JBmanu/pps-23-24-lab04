@@ -1,5 +1,8 @@
 package u03
 
+import u03.Optionals.Optional
+import u03.Optionals.Optional.*
+
 object Sequences: // Essentially, generic linkedlists
 
   enum Sequence[E]:
@@ -36,6 +39,13 @@ object Sequences: // Essentially, generic linkedlists
         case Cons(h, t) if pred(h) => Cons(value, substituted(t)(pred)(value))
         case Cons(h, t)            => Cons(h, substituted(t)(pred)(value))
         case _                     => Nil()
+
+    def findFirst[A](l: Sequence[A])(pred: A => Boolean): Optional[A] =
+      filter(l)(pred) match
+        case Cons(h, t) => Just(h)
+        case _ => Empty()
+
+
 
 @main
 def trySequences =
