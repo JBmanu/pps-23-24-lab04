@@ -23,6 +23,10 @@ object Optionals:
       case Just(a) => Just(f(a))
       case _       => Empty()
 
+    def ifPresent[A](opt: Optional[A])(f: A => Unit): Unit = opt match
+      case Just(a) => f(a)
+      case _ =>
+
 @main def tryOptionals =
   import Optionals.* // to work with Optionals (to see Optional type)
   import Optional.* // to directly access algorithms

@@ -6,6 +6,7 @@ import org.junit.Assert.*
 class OptionTestImproved:
 
   // imports needed to work with Options
+
   import u03.Optionals.*
   import Optional.*
 
@@ -27,3 +28,6 @@ class OptionTestImproved:
     assertEquals(Just(optVal + 1), map(optSome)(_ + 1))
     assertEquals(Just("val: " + optVal), map(optSome)(v => "val: " + v))
     assertEquals(Empty(), map(optNone)(v => "val: " + v))
+
+  @Test def testIfPresent(): Unit =
+    ifPresent(optSome)(assertEquals(optVal, _))
