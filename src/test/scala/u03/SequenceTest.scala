@@ -41,4 +41,8 @@ class SequenceTest:
     val value = Just(30)
     assertEquals(value, findFirst(l)(_.equals(30)))
     assertEquals(Empty(), findFirst(l)(_.equals(40)))
-
+    
+  @Test def testConcat(): Unit =
+    val l1: Sequence[Int] = Cons(10, Cons(20, Nil()))
+    val l2: Sequence[Int] = Cons(30, Nil())
+    assertEquals(l, concat(l1)(l2))

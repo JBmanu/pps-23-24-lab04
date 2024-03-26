@@ -44,6 +44,11 @@ object Sequences: // Essentially, generic linkedlists
       filter(l)(pred) match
         case Cons(h, t) => Just(h)
         case _ => Empty()
+        
+    def concat[A](l1: Sequence[A])(l2: Sequence[A]): Sequence[A] =
+      l1 match
+        case Cons(h, t) => Cons(h, concat(t)(l2))
+        case _ => l2
 
 
 
