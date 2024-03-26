@@ -19,7 +19,6 @@ class SchoolModelTest:
   val alessandroName = "Alessandro"
   val mirkoTeacher: Teacher = teacher(mirkoName)
   val alessandroTeacher: Teacher = teacher(alessandroName)
-  val pippoTeacher: Teacher = teacher(pippoName)
   val teachers: Sequence[Teacher] = Cons(mirkoTeacher, Cons(alessandroTeacher, Nil()))
   val courses: Sequence[Course] = Cons(pps, Cons(pcd, Nil()))
   val school: School = SchoolModelImpl.school(teachers, courses)
@@ -100,5 +99,6 @@ class SchoolModelTest:
   }
 
   @Test def setTeacherNotOfSchoolToCourse(): Unit = {
+    val pippoTeacher: Teacher = teacher(pippoName)
     assertThrows(classOf[IllegalArgumentException], () => school.setTeacherToCourse(pippoTeacher, chemical))
   }
