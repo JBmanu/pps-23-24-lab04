@@ -93,3 +93,7 @@ class SchoolModelTest:
     val coursesOfATeacher = newSchool.coursesOfATeacher(mirkoTeacher)
     assertEquals(Cons(pps, Nil()), coursesOfATeacher)
   }
+
+  @Test def setTeacherToCourseNotOfSchool(): Unit = {
+    assertThrows(classOf[IllegalArgumentException], () => school.setTeacherToCourse(mirkoTeacher, chemical))
+  }

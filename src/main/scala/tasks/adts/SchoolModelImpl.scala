@@ -34,13 +34,14 @@ object SchoolModelImpl extends SchoolModel:
     def courses(): Sequence[Course] = school.courses
 
     private def containsTeacher(teacherName: String): Boolean =
-      contains(school.teachers)(_.name.equals(teacherName))
+      !isEmpty(school.teacherByName(teacherName))
 
     private def containsCourse(name: Course): Boolean =
-      contains(school.courses)(_.equals(name))
+      !isEmpty(school.courseByName(name))
 
-    private def substitutedTeacher(teacher: Teacher): Sequence[Teacher] =
-      substituted(school.teachers)(_.name.equals(teacher.name))(teacher)
+    private def substitutedTeacher(teacher: Teacher): School =
+      SchoolImpl(substituted(school.teachers)(_.name.equals(teacher.name))(teacher),
+                 school.courses)
 
     override def addTeacher(name: String): School =
       if name.isBlank then throw IllegalArgumentException("Empty Name")
@@ -77,11 +78,10 @@ object SchoolModelImpl extends SchoolModel:
     override def setTeacherToCourse(teacher: Teacher, course: Course): School =
       if !containsCourse(course) then throw IllegalArgumentException("Not Found Course")
       teacherByName(teacher.name) match
-        case Just(t) => SchoolImpl(substitutedTeacher(t.addCourse(course)), school.courses)
+        case Just(t) => school.substitutedTeacher(t.addCourse(course))
         case _       => throw IllegalArgumentException("Not found teacher")
 
     override def coursesOfATeacher(teacher: Teacher): Sequence[Course] =
       teacherByName(teacher.name) match
         case Just(a) => a.courses
         case _       => Nil()
-
