@@ -18,11 +18,13 @@ object SchoolModelImpl extends SchoolModel:
   private case class SchoolImpl(teachers: Sequence[Teacher], courses: Sequence[Course])
 
   def course(name: String): Course = name
-  def teacher(name: String, courses: Sequence[Course]): Teacher = TeacherImpl(name, courses)
+
+  def teacher(name: String): Teacher = TeacherImpl(name, Nil())
+
   def school(teachers: Sequence[Teacher], courses: Sequence[Course]): School = SchoolImpl(teachers, courses)
 
   extension (teacher: Teacher)
-    def addCourse(course: Course): Teacher =
+    private def addCourse(course: Course): Teacher =
       if contains(teacher.courses)(_.equals(course)) then throw IllegalArgumentException("Contain same course")
       teacher match
         case TeacherImpl(n, c) => TeacherImpl(n, Cons(course, c))
@@ -37,10 +39,13 @@ object SchoolModelImpl extends SchoolModel:
     private def containsCourse(name: Course): Boolean =
       contains(school.courses)(_.equals(name))
 
+    private def substitutedTeacher(teacher: Teacher): Sequence[Teacher] =
+      substituted(school.teachers)(_.name.equals(teacher.name))(teacher)
+
     override def addTeacher(name: String): School =
       if name.isBlank then throw IllegalArgumentException("Empty Name")
       if containsTeacher(name) then throw IllegalArgumentException("Contain same teacher")
-      val teachers = Cons(TeacherImpl(name, Nil()), school.teachers)
+      val teachers = Cons(teacher(name), school.teachers)
       SchoolImpl(teachers, school.courses)
 
     override def addCourse(name: Course): School =
@@ -52,34 +57,31 @@ object SchoolModelImpl extends SchoolModel:
     override def teacherByName(name: String): Optional[Teacher] =
       filter(school.teachers)(_.name.equals(name)) match
         case Cons(h, _) => Just(h)
-        case _ => Empty()
+        case _          => Empty()
 
     override def courseByName(name: Course): Optional[Course] =
       filter(school.courses)(_.equals(name)) match
         case Cons(h, _) => Just(h)
-        case _ => Empty()
-
-    private def findFistTeacher(teacher: Teacher): Optional[Teacher] =
-      findFirst(school.teachers)(_.name.equals(teacher.name))
+        case _          => Empty()
 
     override def nameOfTeacher(teacher: Teacher): String =
-      findFistTeacher(teacher) match
+      teacherByName(teacher.name) match
         case Just(TeacherImpl(n, c)) => s"$n"
-        case _ => ""
+        case _                       => ""
 
     override def nameOfCourse(teacher: Teacher): String =
-      findFistTeacher(teacher) match
-        case Just(TeacherImpl(n, c)) => s"$c"
-        case _ => ""
+      teacherByName(teacher.name) match
+        case Just(TeacherImpl(n, c)) => Sequence.toString(c)
+        case _                       => ""
 
     override def setTeacherToCourse(teacher: Teacher, course: Course): School =
-      if containsCourse(course) then throw IllegalArgumentException("Not Found Course")
-      findFirst(school.teachers)(_.name.equals(teacher.name)) match
-        case Just(t) =>
-          val newTeachers = substituted(school.teachers)(_.name.equals(teacher.name))(t.addCourse(course))
-          println(s"$newTeachers")
-          SchoolImpl(newTeachers, school.courses)
-        case _ => throw IllegalArgumentException("Not found teacher")
+      if !containsCourse(course) then throw IllegalArgumentException("Not Found Course")
+      teacherByName(teacher.name) match
+        case Just(t) => SchoolImpl(substitutedTeacher(t.addCourse(course)), school.courses)
+        case _       => throw IllegalArgumentException("Not found teacher")
 
-    override def coursesOfATeacher(teacher: Teacher): Sequence[Course] = teacher.courses
+    override def coursesOfATeacher(teacher: Teacher): Sequence[Course] =
+      teacherByName(teacher.name) match
+        case Just(a) => a.courses
+        case _       => Nil()
 

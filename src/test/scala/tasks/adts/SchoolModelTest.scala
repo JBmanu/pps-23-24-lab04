@@ -1,7 +1,7 @@
 package tasks.adts
 
 import org.junit.Assert.{ assertEquals, assertThrows }
-import org.junit.{ Before, Test }
+import org.junit.Test
 import tasks.adts.SchoolModelImpl.*
 import u03.Optionals.Optional
 import u03.Optionals.Optional.*
@@ -17,8 +17,8 @@ class SchoolModelTest:
   val mirkoName = "Mirko"
   val pippoName = "Pippo"
   val alessandroName = "Alessandro"
-  val mirkoTeacher: Teacher = teacher(mirkoName, Cons(pps, Nil()))
-  val alessandroTeacher: Teacher = teacher(alessandroName, Cons(pcd, Nil()))
+  val mirkoTeacher: Teacher = teacher(mirkoName)
+  val alessandroTeacher: Teacher = teacher(alessandroName)
   val teachers: Sequence[Teacher] = Cons(mirkoTeacher, Cons(alessandroTeacher, Nil()))
   val courses: Sequence[Course] = Cons(pps, Cons(pcd, Nil()))
   val school: School = SchoolModelImpl.school(teachers, courses)
@@ -32,7 +32,7 @@ class SchoolModelTest:
 
   @Test def addTeacher(): Unit =
     val schoolAfterAdd = school.addTeacher(pippoName)
-    val newTeachers = Cons(teacher(pippoName, Nil()), school.teachers())
+    val newTeachers = Cons(teacher(pippoName), school.teachers())
     assertEquals(newTeachers, schoolAfterAdd.teachers())
 
   @Test def addEmptyTeacher(): Unit =
@@ -82,15 +82,14 @@ class SchoolModelTest:
 
   @Test def coursesOfATeacher(): Unit =
     val courses = school.coursesOfATeacher(mirkoTeacher)
-    assertEquals(Cons(pps, Nil()), courses)
+    assertEquals(Nil(), courses)
 
   @Test def nameOfCourse(): Unit =
     val nameOfCourse = school.nameOfCourse(mirkoTeacher)
-    assertEquals(Cons(pps, Nil()), nameOfCourse)
+    assertEquals("", nameOfCourse)
 
   @Test def setTeacherToCourse(): Unit = {
-    val oop = course("OOP")
-    val newSchool = school.setTeacherToCourse(mirkoTeacher, oop)
-    val nameOfCourse = newSchool.nameOfCourse(mirkoTeacher)
-    assertEquals(Cons(oop, Cons(pps, Nil())).toString, nameOfCourse)
+    val newSchool = school.setTeacherToCourse(mirkoTeacher, pps)
+    val coursesOfATeacher = newSchool.coursesOfATeacher(mirkoTeacher)
+    assertEquals(Cons(pps, Nil()), coursesOfATeacher)
   }
