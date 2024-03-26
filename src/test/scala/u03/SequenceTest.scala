@@ -30,3 +30,11 @@ class SequenceTest:
     val sequenceMatch: Sequence[Int] = Cons(10, Cons(20, Nil()))
     assertEquals(sequenceMatch, remove(l)(_.equals(30)))
     assertEquals(l, remove(l)(_.equals(40)))
+
+  @Test def testSubstituted(): Unit =
+    val sequenceMatch: Sequence[Int] = Cons(10, Cons(20, Cons(40, Nil())))
+    assertEquals(sequenceMatch, substituted(l)(_.equals(30))(40))
+    assertEquals(l, substituted(l)(_.equals(40))(50))
+
+
+
