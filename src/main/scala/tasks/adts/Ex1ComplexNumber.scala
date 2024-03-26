@@ -20,8 +20,8 @@ object Ex1ComplexNumbers:
   object BasicComplexADT extends ComplexADT:
 
     // Change assignment below: should probably define a case class and use it?
-    type Real = Double
-    type Imaginary = Double
+    opaque type Real = Double
+    opaque type Imaginary = Double
 
     type Complex = ComplexImpl
     case class ComplexImpl(real: Real, imaginary: Imaginary)
