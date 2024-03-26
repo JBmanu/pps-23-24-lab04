@@ -1,7 +1,6 @@
 package tasks.adts
 import u03.Sequences.*
 import u03.Optionals.*
-import u02.AlgebraicDataTypes.Person
 
 /*  Exercise 2: 
  *  Implement the below trait, and write a meaningful test.
@@ -15,7 +14,7 @@ import u02.AlgebraicDataTypes.Person
 
 object SchoolModel:
 
-  trait SchoolModule:
+  trait SchoolModel:
     type School
     type Teacher
     type Course

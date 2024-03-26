@@ -1,8 +1,8 @@
 package tasks.adts
 
-import org.junit.Assert.{assertEquals, assertThrows}
-import org.junit.Test
-import tasks.adts.SchoolModuleImpl.*
+import org.junit.Assert.{ assertEquals, assertThrows }
+import org.junit.{ Before, Test }
+import tasks.adts.SchoolModelImpl.*
 import u03.Optionals.Optional
 import u03.Optionals.Optional.*
 import u03.Sequences.Sequence
@@ -21,7 +21,7 @@ class SchoolModelTest:
   val alessandroTeacher: Teacher = teacher(alessandroName, Cons(pcd, Nil()))
   val teachers: Sequence[Teacher] = Cons(mirkoTeacher, Cons(alessandroTeacher, Nil()))
   val courses: Sequence[Course] = Cons(pps, Cons(pcd, Nil()))
-  val school: School = SchoolModuleImpl.school(teachers, courses)
+  val school: School = SchoolModelImpl.school(teachers, courses)
 
   @Test def createCourse(): Unit =
     assertEquals("PPS", pps)
@@ -86,11 +86,11 @@ class SchoolModelTest:
 
   @Test def nameOfCourse(): Unit =
     val nameOfCourse = school.nameOfCourse(mirkoTeacher)
-    assertEquals(pps, nameOfCourse)
+    assertEquals(Cons(pps, Nil()), nameOfCourse)
 
-//  @Test def setTeacherToCourse(): Unit = {
-//    val oop = course("OOP")
-//    val newSchool = school.setTeacherToCourse(mirkoTeacher, oop)
-//    val nameOfCourse = newSchool.nameOfCourse(mirkoTeacher)
-//    assertEquals(oop, nameOfCourse)
-//  }
+  @Test def setTeacherToCourse(): Unit = {
+    val oop = course("OOP")
+    val newSchool = school.setTeacherToCourse(mirkoTeacher, oop)
+    val nameOfCourse = newSchool.nameOfCourse(mirkoTeacher)
+    assertEquals(Cons(oop, Cons(pps, Nil())).toString, nameOfCourse)
+  }
