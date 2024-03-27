@@ -42,11 +42,15 @@ object Ex5Traversable:
       case _ => ()
 
   object TraversableSequence extends Traversable[Sequence]:
+    @tailrec
     override def log[A](a: Sequence[A]): Unit = a match
       case Cons(h, t) => println("The next element is: " + h); log(t);
       case _ => ()
-
-    override def logAll[A](seq: Sequence[Sequence[A]]): Unit = ???
+      
+    @tailrec
+    override def logAll[A](seq: Sequence[Sequence[A]]): Unit = seq match
+      case Cons(h, t) => log(h); logAll(t)
+      case _ => ()
 
 
 

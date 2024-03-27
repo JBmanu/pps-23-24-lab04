@@ -1,6 +1,5 @@
 package tasks.typeclasses
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import u03.Optionals.Optional.*
 
@@ -21,8 +20,15 @@ class TraversableOptionalTest:
 
 class TraversableSequenceTest:
   import u04lab.Ex5Traversable.TraversableSequence.*
+  
+  val seq: Sequence[Int] = Cons(1, Cons(2, Cons(3, Nil())))
+  
   @Test def logSequence(): Unit =
-    val seq = Cons(1, Cons(2, Cons(3, Nil())))
     log(seq)
+    
+  @Test def logSequenceOfSequence(): Unit =
+    val seq1 = Cons(4, Cons(5, Cons(6, Nil())))
+    val seqOfSeq = Cons(seq, Cons(seq1, Nil()))
+    logAll(seqOfSeq)
 
 
