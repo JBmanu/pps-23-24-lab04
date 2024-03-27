@@ -22,37 +22,23 @@ import scala.annotation.tailrec
 
 object Ex5Traversable:
 
-//  private def log[A](a: A): Unit = println("The next element is: " + a)
-//  private def logAll[A](seq: Sequence[A]): Unit = seq match
-//    case Cons(h, t) => log(h); logAll(t)
-//    case _          => ()
-
   trait Traversable[T[_]]:
-    def log[A](a: T[A]): Unit
-    def logAll[A](seq: Sequence[T[A]]): Unit
+    extension [A](a: T[A])
+      def log(): Unit
+    extension [A](seq: Sequence[T[A]])
+      def logAll(): Unit = seq match
+        case Cons(h, t) => h.log(); t.logAll()
+        case _          => ()
 
   object TraversableOptional extends Traversable[Optional]:
-    override def log[A](a: Optional[A]): Unit = a match
-      case Just(v) => println("The next element is: " + v)
-      case _ => println("The next element is: Empty")
-
-    @tailrec
-    override def logAll[A](seq: Sequence[Optional[A]]): Unit = seq match
-      case Cons(h, t) => log(h); logAll(t)
-      case _ => ()
+    extension [A](a: Optional[A])
+      override def log(): Unit = a match
+        case Just(v) => println("The next element is: " + v)
+        case _ => println("The next element is: Empty")
 
   object TraversableSequence extends Traversable[Sequence]:
-    @tailrec
-    override def log[A](a: Sequence[A]): Unit = a match
-      case Cons(h, t) => println("The next element is: " + h); log(t);
-      case _ => ()
-      
-    @tailrec
-    override def logAll[A](seq: Sequence[Sequence[A]]): Unit = seq match
-      case Cons(h, t) => log(h); logAll(t)
-      case _ => ()
-
-
-
-
-  
+    extension [A](a: Sequence[A])
+      @tailrec
+      override def log(): Unit = a match
+        case Cons(h, t) => println("The next element is: " + h); t.log();
+        case _          => ()
