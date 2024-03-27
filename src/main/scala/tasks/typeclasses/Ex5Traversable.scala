@@ -27,19 +27,20 @@ object Ex5Traversable:
 //    case Cons(h, t) => log(h); logAll(t)
 //    case _          => ()
 
-
   trait Traversable[T[_]]:
-    def log[A](a: A): Unit
-    def logAll[A](seq: Sequence[A]): Unit
+    def log[A](a: T[A]): Unit
+    def logAll[A](seq: Sequence[T[A]]): Unit
 
   object TraversableOptional extends Traversable[Optional]:
-    override def log[A](a: A): Unit = a match
+    override def log[A](a: Optional[A]): Unit = a match
       case Just(v) => println("The next element is: " + v)
-      case _ => ()
-
+      case _ => println("The next element is: Empty")
+    
     @tailrec
-    override def logAll[A](seq: Sequence[A]): Unit = seq match
+    override def logAll[A](seq: Sequence[Optional[A]]): Unit = seq match 
       case Cons(h, t) => log(h); logAll(t)
       case _ => ()
+
+
 
   
