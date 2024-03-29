@@ -114,10 +114,7 @@ object AllTask:
           case Just(TeacherImpl(n, c)) => s"$n"
           case _                       => ""
 
-      override def nameOfCourse(teacher: Teacher): String =
-        teacherByName(teacher.name) match
-          case Just(TeacherImpl(n, c)) => Sequence.toString(c)
-          case _                       => ""
+      override def nameOfCourse(course: Course): String = course
 
       override def setTeacherToCourse(teacher: Teacher, course: Course): School =
         throwIfNotContains(containsCourse(course))
