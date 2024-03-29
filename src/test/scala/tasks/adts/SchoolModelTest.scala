@@ -100,5 +100,5 @@ class SchoolModelTest:
 
   @Test def setTeacherNotOfSchoolToCourse(): Unit = {
     val pippoTeacher: Teacher = teacher(pippoName)
-    assertThrows(classOf[IllegalArgumentException], () => school.setTeacherToCourse(pippoTeacher, chemical))
+    assertThrows(classOf[IllegalArgumentException], () => school.setTeacherToCourse(pippoTeacher, pps))
   }

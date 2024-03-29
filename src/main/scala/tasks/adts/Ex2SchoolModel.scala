@@ -12,7 +12,7 @@ import u03.Optionals.*
  *  - add/set methods below create the new school 
  */
 
-object SchoolModel:
+object Ex2SchoolModel:
 
   trait SchoolModel:
     type School

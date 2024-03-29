@@ -1,6 +1,6 @@
 package tasks.adts
 
-import tasks.adts.SchoolModel.SchoolModel
+import tasks.adts.Ex2SchoolModel.SchoolModel
 import u03.Optionals.Optional
 import u03.Optionals.Optional.*
 import u03.Sequences.Sequence
@@ -23,9 +23,18 @@ object SchoolModelImpl extends SchoolModel:
 
   def school(teachers: Sequence[Teacher], courses: Sequence[Course]): School = SchoolImpl(teachers, courses)
 
+  private def throwIsBlack(s: String): Unit =
+    if s.isBlank then throw IllegalArgumentException("String is Black")
+
+  private def throwIfNotContains(contains: Boolean): Unit =
+    if !contains then throw IllegalArgumentException("Not found element")
+
+  private def throwIfContains(contains: Boolean): Unit =
+    if contains then throw IllegalArgumentException("Contain same element")
+
   extension (teacher: Teacher)
     private def addCourse(course: Course): Teacher =
-      if contains(teacher.courses)(_.equals(course)) then throw IllegalArgumentException("Contain same course")
+      throwIfContains(contains(teacher.courses)(_.equals(course)))
       teacher match
         case TeacherImpl(n, c) => TeacherImpl(n, Cons(course, c))
 
@@ -39,19 +48,20 @@ object SchoolModelImpl extends SchoolModel:
     private def containsCourse(name: Course): Boolean =
       !isEmpty(school.courseByName(name))
 
+
     private def substitutedTeacher(teacher: Teacher): School =
       SchoolImpl(substituted(school.teachers)(_.name.equals(teacher.name))(teacher),
                  school.courses)
 
     override def addTeacher(name: String): School =
-      if name.isBlank then throw IllegalArgumentException("Empty Name")
-      if containsTeacher(name) then throw IllegalArgumentException("Contain same teacher")
+      throwIsBlack(name)
+      throwIfContains(containsTeacher(name))
       val teachers = Cons(teacher(name), school.teachers)
       SchoolImpl(teachers, school.courses)
 
     override def addCourse(name: Course): School =
-      if name.isBlank then throw IllegalArgumentException("Empty Course")
-      if containsCourse(name) then throw IllegalArgumentException("Contain same course")
+      throwIsBlack(name)
+      throwIfContains(containsCourse(name))
       val courses = Cons(name, school.courses)
       SchoolImpl(school.teachers, courses)
 
@@ -76,7 +86,7 @@ object SchoolModelImpl extends SchoolModel:
         case _                       => ""
 
     override def setTeacherToCourse(teacher: Teacher, course: Course): School =
-      if !containsCourse(course) then throw IllegalArgumentException("Not Found Course")
+      throwIfNotContains(containsCourse(course))
       teacherByName(teacher.name) match
         case Just(t) => school.substitutedTeacher(t.addCourse(course))
         case _       => throw IllegalArgumentException("Not found teacher")
