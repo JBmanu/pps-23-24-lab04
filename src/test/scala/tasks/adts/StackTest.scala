@@ -11,8 +11,6 @@ import u03.Optionals.Optional
 */
 
 class Stacktest:
-
-
   val stack = StackImpl
 
   import stack.*

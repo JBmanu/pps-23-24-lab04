@@ -17,7 +17,7 @@ import scala.util.{ Failure, Success }
     - Verify that the main works as expected
   */
 object Ex6TryModel:
-  private enum TryImpl[A]:
+  enum TryImpl[A]:
     case Success(value: A)
     case Failure(exception: Throwable)
 

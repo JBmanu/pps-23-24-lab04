@@ -11,7 +11,7 @@ import tasks.adts.Ex1ComplexNumber.*
 class ComplexNumberTest:
 
   // Choice of implementation to test
-  val complexADT: ComplexADT = BasicComplexADT
+  val complexADT: ComplexADT = ComplexADTImpl
 
   import complexADT.*
 

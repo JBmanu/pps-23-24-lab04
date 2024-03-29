@@ -19,7 +19,7 @@ object Ex1ComplexNumber:
       def subtract(other: Complex): Complex
       def asString(): String
 
-  object BasicComplexADT extends ComplexADT:
+  object ComplexADTImpl extends ComplexADT:
 
     // Change assignment below: should probably define a case class and use it?
     opaque type Real = Double
