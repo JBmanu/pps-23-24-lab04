@@ -3,6 +3,8 @@ package tasks.monads
 import u04.monads.Monads.Monad
 import u04.monads.Monads.Monad
 
+import scala.util.{ Failure, Success }
+
 /**
   * Exercise 6: 
     This module contains the implementation of a Try monad, which is a monad that 
