@@ -16,6 +16,12 @@ class CounterTest:
     assertEquals(incValue, incFun)
 
   @Test def decCounter(): Unit =
-    var decFun = dec().run(initialCounter())
+    val decFun = dec().run(initialCounter())
     val decValue = (-1, ())
     assertEquals(decValue, decFun)
+
+  @Test def resetCounter(): Unit = 
+    val incInitialCounter = inc().run(initialCounter())._1
+    val resetFun = reset().run(incInitialCounter)
+    val resetValue = (0, ())
+    assertEquals(resetValue, resetFun)
