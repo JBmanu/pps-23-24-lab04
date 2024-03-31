@@ -5,7 +5,7 @@ import u04.monads.{ CounterState, States }
 import u04.monads.CounterStateImpl
 
 trait CounterEx7 extends CounterState:
-  extension (value: Counter)
+  extension (value: Int)
     def set(): State[Counter, Unit]
 
 object CounterEx7Impl extends CounterEx7:
@@ -21,7 +21,7 @@ object CounterEx7Impl extends CounterEx7:
 
   override def get(): State[Counter, Int] = CounterStateImpl.get()
 
-  override def nop(): State[Counter, Unit] = ???
+  override def nop(): State[Counter, Unit] = CounterStateImpl.nop()
 
-  extension (value: Counter)
+  extension (value: Int)
     override def set(): State[Counter, Unit] = ???
