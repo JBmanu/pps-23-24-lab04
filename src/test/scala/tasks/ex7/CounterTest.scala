@@ -29,9 +29,13 @@ class CounterTest:
   @Test def valueCounter(): Unit =
     val incInitialValue = inc().run(initialCounter())._1
     assertEquals((1, 1), get().run(incInitialValue))
-    
+
   @Test def nopValue(): Unit =
     val nopFun = nop().run(initialCounter())
     val nopValue = (0, ())
     assertEquals(nopValue, nopFun)
-    
+
+  @Test def setValue(): Unit =
+    val counter = inc().run(inc().run(initialCounter())._1)._1
+    assertEquals((2, ()), set(counter).run(initialCounter()))
+
