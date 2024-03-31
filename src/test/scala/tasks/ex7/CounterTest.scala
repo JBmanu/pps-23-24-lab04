@@ -20,8 +20,12 @@ class CounterTest:
     val decValue = (-1, ())
     assertEquals(decValue, decFun)
 
-  @Test def resetCounter(): Unit = 
+  @Test def resetCounter(): Unit =
     val incInitialCounter = inc().run(initialCounter())._1
     val resetFun = reset().run(incInitialCounter)
     val resetValue = (0, ())
     assertEquals(resetValue, resetFun)
+
+  @Test def valueCounter(): Unit =
+    val incInitialValue = inc().run(initialCounter())._1
+    assertEquals((1, 1), get().run(incInitialValue))

@@ -19,7 +19,7 @@ object CounterEx7Impl extends CounterEx7:
 
   override def reset(): State[Counter, Unit] = CounterStateImpl.reset()
 
-  override def get(): State[Counter, Int] = ???
+  override def get(): State[Counter, Int] = CounterStateImpl.get()
 
   override def nop(): State[Counter, Unit] = ???
 
