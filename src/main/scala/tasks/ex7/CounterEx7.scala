@@ -15,7 +15,7 @@ object CounterEx7Impl extends CounterEx7:
 
   override def inc(): State[Counter, Unit] = CounterStateImpl.inc()
 
-  override def dec(): State[Counter, Unit] = ???
+  override def dec(): State[Counter, Unit] = CounterStateImpl.dec()
 
   override def reset(): State[Counter, Unit] = ???
 

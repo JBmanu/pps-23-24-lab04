@@ -14,3 +14,8 @@ class CounterTest:
     val incFun = inc().run(initialCounter())
     val incValue = (1, ())
     assertEquals(incValue, incFun)
+
+  @Test def decCounter(): Unit =
+    var decFun = dec().run(initialCounter())
+    val decValue = (-1, ())
+    assertEquals(decValue, decFun)
