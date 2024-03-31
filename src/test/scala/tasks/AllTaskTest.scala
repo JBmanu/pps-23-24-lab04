@@ -118,8 +118,8 @@ object AllTaskTest:
       assertEquals(Nil(), courses)
 
     @Test def nameOfCourse(): Unit =
-      val nameOfCourse = school.nameOfCourse(mirkoTeacher)
-      assertEquals("", nameOfCourse)
+      val nameOfCourse = school.nameOfCourse(pps)
+      assertEquals(pps, nameOfCourse)
 
     @Test def setTeacherToCourse(): Unit = {
       val newSchool = school.setTeacherToCourse(mirkoTeacher, pps)
