@@ -10,10 +10,18 @@ class SwingFunctionalFacade {
 
     public static interface Frame {
         Frame setSize(int width, int height);
+        
+        // Adders
         Frame addButton(String text, String name);
         Frame addLabel(String text, String name);
+        Frame addTextField(String text, String name);
+        
         Frame showToLabel(String text, String name);
         Frame show();
+
+        String labelText(String name);
+        String texFieldText(String name);
+        
         Supplier<String> events();        
     }
 
@@ -31,6 +39,7 @@ class SwingFunctionalFacade {
         private final JFrame jframe = new JFrame();
         private final Map<String, JButton> buttons = new HashMap<>();
         private final Map<String, JLabel> labels = new HashMap<>();
+        private final Map<String, JTextField> textFiels = new HashMap<>();
         private final LinkedBlockingQueue<String> eventQueue = new LinkedBlockingQueue<>();
         private final Supplier<String> events = () -> {
             try{
@@ -69,6 +78,24 @@ class SwingFunctionalFacade {
             this.labels.put(name, jl);
             this.jframe.getContentPane().add(jl);
             return this;
+        }
+
+        @Override
+        public Frame addTextField(String text, String name) {
+            JTextField jtf = new JTextField(text);
+            this.textFiels.put(name, jtf);
+            this.jframe.getContentPane().add(jtf);
+            return this;
+        }
+
+        @Override
+        public String labelText(String name) {
+            return this.labels.get(name).getText();
+        }
+
+        @Override
+        public String texFieldText(String name) {
+            return this.textFiels.get(name).getText();
         }
 
         @Override

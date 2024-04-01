@@ -9,16 +9,18 @@ trait WindowState:
   def setSize(width: Int, height: Int): State[Window, Unit]
   def addButton(text: String, name: String): State[Window, Unit]
   def addLabel(text: String, name: String): State[Window, Unit]
+  def addTextField(text: String, name: String): State[Window, Unit]
   def toLabel(text: String, name: String): State[Window, Unit]
   def show(): State[Window, Unit]
-  def exec(cmd: =>Unit): State[Window, Unit]
+  def exec(cmd: => Unit): State[Window, Unit]
   def eventStream(): State[Window, Stream[String]]
 
+  def textFieldText(name: String): State[Window, String]
+  
 object WindowStateImpl extends WindowState:
   import SwingFunctionalFacade.*
   
   type Window = Frame
-  
   
   def initialWindow: Window = createFrame
 
@@ -28,6 +30,8 @@ object WindowStateImpl extends WindowState:
     State(w => ((w.addButton(text, name)), {}))
   def addLabel(text: String, name: String): State[Window, Unit] =
     State(w => ((w.addLabel(text, name)), {}))
+  def addTextField(text: String, name: String): State[Window, Unit] =
+    State(w => (w.addTextField(text, name), {}))
   def toLabel(text: String, name: String): State[Window, Unit] =
     State(w => ((w.showToLabel(text, name)), {}))
   def show(): State[Window, Unit] =
@@ -36,7 +40,10 @@ object WindowStateImpl extends WindowState:
     State(w => (w, cmd))  
   def eventStream(): State[Window, Stream[String]] =
     State(w => (w, Stream.generate(() => w.events().get)))
-  
+
+  override def textFieldText(name: String): State[Window, String] =
+    State(w => (w, w.texFieldText(name)))
+
 @main def windowStateExample =
   import u04.*
   import WindowStateImpl.*

@@ -14,6 +14,7 @@ trait CounterState:
 object CounterStateImpl extends CounterState:
   opaque type Counter = Int
   
+  def counter(value: Int): Counter = value
   def initialCounter(): Counter = 0
 
   // giving (new_counter, result)
