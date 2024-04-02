@@ -14,39 +14,22 @@ import u04.monads.WindowStateImpl.*
   // f preso un modello finale => la view iniziale e finale
   def mv[SM, SV, AM, AV](m1: State[SM, AM], f: AM => State[SV, AV]): State[(SM, SV), AV] =
     State: (sm, sv) =>
-      println("MODEL START: " + sm)
-      println("VIEW START: " + sv)
       val (sm2, am) = m1.run(sm)
       val (sv2, av) = f(am).run(sv)
       ((sm2, sv2), av)
-  
-  
-  def vmv[SM, SV, AM, AV](v1: State[SV, AM], fm: (AM) => State[SM, AV], fv: (SM) => State[SV, AV]): State[(SM, SV), AV] = 
-    State: (sm, sv) =>
-      println("MODEL START: " + sm)
-      println("VIEW START: " + sv)
-      val (sv1, am) = v1.run(sv)
-      val (sm2, av) = fm(am).run(sm)
-      val (sv2, av2) = fv(sm2).run(sv1)
-      println("MODEL FINALE: " + av)
-      println("VIEW FINALE: " + sv2)
-      ((sm2, sv2), av)
 
-  def vm[SM, SV, AM, AV](v1: State[SV, AM], f: (AM) => State[SV, AV]): State[(SM, SV), AV] =
-    // sm => stato modello iniziale
-    // sv => stato view
+
+  def vmv[SM, SV, AM, AV](v1: State[SV, AM],
+                          funConvertAM_SM: (AM, SM) => SM,
+                          funChangeModel: (SM) => State[SM, AV],
+                          funChangeView: (SM) => State[SV, AV]): State[(SM, SV), AV] =
     State: (sm, sv) =>
-      println("MODEL START: " + sm)
-      println("VIEW START: " + sv)
-      // runno lo stato dalla view iniziale => State(view(iniziale), model(finale))
       val (sv1, am) = v1.run(sv)
-      println("MODEL FINALE: " + am)
-      println("VIEW FINALE: " + sv1)
-      // runno f stato final => State(view(finale), modello(finale)) 
-      val (sv2, av) = f(am).run(sv1)
-      println("MODEL FINALE: " + av)
-      println("VIEW FINALE: " + sv2)
-      ((sm, sv2), av)
+      val sm2 = funConvertAM_SM(am, sm)
+      val (sm3, av) = funChangeModel(sm2).run(sm)
+      val (sv2, av2) = funChangeView(sm2).run(sv1)
+      ((sm3, sv2), av2)
+
 
   def windowCreation(str: String): State[Window, Stream[String]] = for
     _ <- setSize(300, 300)
@@ -61,16 +44,19 @@ import u04.monads.WindowStateImpl.*
     events <- eventStream()
   yield events
 
+  val stringToCounter: (String, Counter) => Counter = (s, c) => s.toIntOption match
+    case Some(value) => counter(value)
+    case _           => c
+
   val controller = for
     events <- mv(seq(reset(), get()), i => windowCreation(i.toString()))
     _ <- seqN(events.map(_ match
                            case "IncButton"   => mv(seq(inc(), get()), i => toLabel(i.toString, "Label1"))
                            case "DecButton"   => mv(seq(dec(), get()), i => toLabel(i.toString, "Label1"))
                            case "ResetButton" => mv(seq(reset(), get()), i => toLabel(i.toString, "Label1"))
-                           case "SetButton"   => vmv(textFieldText("TextField"), 
-                                                     i => set(counter(i.toInt)), i => toLabel(i.toString, "Label1"))
-                           case "QuitButton" => mv(nop(), _ => exec(sys.exit()))))
+                           case "SetButton"   => vmv(textFieldText("TextField"), stringToCounter, set,
+                                                     i => toLabel(i.toString, "Label1"))
+                           case "QuitButton"  => mv(nop(), _ => exec(sys.exit()))))
   yield ()
-
 
   controller.run((initialCounter(), initialWindow))
