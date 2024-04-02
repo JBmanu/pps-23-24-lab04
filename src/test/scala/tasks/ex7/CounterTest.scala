@@ -44,3 +44,6 @@ class CounterTest:
     val s = "1"
     assertEquals(1, stringToCounter(s, counter(0)))
 
+  @Test def convertStringToCounter(): Unit =
+    val s = "prova"
+    assertEquals(0, stringToCounter(s, counter(0)))
