@@ -3,6 +3,7 @@ package tasks.ex7
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import tasks.ex7.CounterEx7Impl.*
+import u04.monads.CounterStateImpl.counter
 
 class CounterTest:
   val initialValue = 0
@@ -38,4 +39,8 @@ class CounterTest:
   @Test def setValue(): Unit =
     val counter = inc().run(inc().run(initialCounter())._1)._1
     assertEquals((2, ()), set(counter).run(initialCounter()))
+
+  @Test def convertStringOfNumberToCounter(): Unit =
+    val s = "1"
+    assertEquals(1, stringToCounter(s, counter(0)))
 
