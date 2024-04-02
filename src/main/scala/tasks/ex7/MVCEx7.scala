@@ -44,10 +44,6 @@ import u04.monads.WindowStateImpl.*
     events <- eventStream()
   yield events
 
-  val stringToCounter: (String, Counter) => Counter = (s, c) => s.toIntOption match
-    case Some(value) => counter(value)
-    case _           => c
-
   val controller = for
     events <- mv(seq(reset(), get()), i => windowCreation(i.toString()))
     _ <- seqN(events.map(_ match
