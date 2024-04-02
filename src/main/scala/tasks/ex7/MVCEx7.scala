@@ -3,15 +3,12 @@ package tasks.ex7
 import tasks.ex7.CounterEx7Impl.*
 import u03.extensionmethods.Streams.*
 import u04.monads.*
-import u04.monads.CounterStateImpl.counter
 import u04.monads.Monads.*
 import u04.monads.Monads.Monad.{ seq, seqN }
 import u04.monads.States.*
 import u04.monads.WindowStateImpl.*
 
 @main def MVCEx7 =
-  // m1 modello iniziale a quello finale
-  // f preso un modello finale => la view iniziale e finale
   def mv[SM, SV, AM, AV](m1: State[SM, AM], f: AM => State[SV, AV]): State[(SM, SV), AV] =
     State: (sm, sv) =>
       val (sm2, am) = m1.run(sm)
@@ -32,7 +29,7 @@ import u04.monads.WindowStateImpl.*
 
 
   def windowCreation(str: String): State[Window, Stream[String]] = for
-    _ <- setSize(300, 300)
+    _ <- setSize(165, 300)
     _ <- addButton(text = "inc", name = "IncButton")
     _ <- addButton(text = "dec", name = "DecButton")
     _ <- addButton(text = "reset", name = "ResetButton")

@@ -50,6 +50,7 @@ class SwingFunctionalFacade {
         };
         public FrameImpl() {
             this.jframe.setLayout(new FlowLayout());
+            this.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
         @Override
@@ -82,7 +83,7 @@ class SwingFunctionalFacade {
 
         @Override
         public Frame addTextField(String text, String name) {
-            JTextField jtf = new JTextField(text);
+            JTextField jtf = new JTextField(text, 5);
             this.textFiels.put(name, jtf);
             this.jframe.getContentPane().add(jtf);
             return this;
